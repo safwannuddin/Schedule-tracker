@@ -97,7 +97,7 @@ export function WeekGrid({ data }: WeekGridProps) {
                     {Math.round(progress * 100)}%
                   </span>
                 </div>
-                {item.checks.map((check) => (
+                {item.checks.map((check, idx) => (
                   <div
                     key={check.date}
                     className="border-r border-stone-100 p-1.5 last:border-r-0"
@@ -105,6 +105,7 @@ export function WeekGrid({ data }: WeekGridProps) {
                     <DayCell
                       check={check}
                       weeklyItemId={item.id}
+                      dayNumber={idx + 1}
                       onUpdate={(payload) =>
                         mutation.mutate({
                           weekly_item_id: item.id,

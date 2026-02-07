@@ -20,13 +20,13 @@ def _week_dates(week_start: date) -> list[date]:
 
 @router.post("", response_model=WeekResponse)
 def create_week(body: WeekCreate, db: Annotated[Session, Depends(get_db)]):
-    """Create a new week. week_start_date must be a Monday."""
-    if body.week_start_date.weekday() != 0:
-        raise HTTPException(400, "week_start_date must be a Monday")
-    existing = db.query(Week).filter(Week.week_start_date == body.week_start_date).first()
+    """Create a new week. Any date is normalized to that week's Monday."""
+    d = body.week_start_date
+    monday = d - timedelta(days=d.weekday())
+    existing = db.query(Week).filter(Week.week_start_date == monday).first()
     if existing:
         raise HTTPException(409, "Week with this start date already exists")
-    week = Week(week_start_date=body.week_start_date)
+    week = Week(week_start_date=monday)
     db.add(week)
     db.commit()
     db.refresh(week)

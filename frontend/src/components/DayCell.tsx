@@ -10,10 +10,11 @@ const statusColors: Record<number, string> = {
 interface DayCellProps {
   check: GridCheck;
   weeklyItemId: number;
+  dayNumber: number;
   onUpdate: (payload: { date: string; status: number; minutes?: number | null; note?: string | null }) => void;
 }
 
-export function DayCell({ check, weeklyItemId: _wid, onUpdate }: DayCellProps) {
+export function DayCell({ check, weeklyItemId: _wid, dayNumber, onUpdate }: DayCellProps) {
   const [open, setOpen] = useState(false);
   const nextStatus = (check.status + 1) % 3;
   const style = statusColors[check.status] ?? statusColors[0];
@@ -51,6 +52,7 @@ export function DayCell({ check, weeklyItemId: _wid, onUpdate }: DayCellProps) {
       {open && (
         <CellEditPopover
           check={check}
+          dayNumber={dayNumber}
           onSave={(minutes, note) => {
             onUpdate({
               date: check.date,
@@ -69,11 +71,12 @@ export function DayCell({ check, weeklyItemId: _wid, onUpdate }: DayCellProps) {
 
 interface CellEditPopoverProps {
   check: GridCheck;
+  dayNumber: number;
   onSave: (minutes: number | null, note: string | null) => void;
   onClose: () => void;
 }
 
-function CellEditPopover({ check, onSave, onClose }: CellEditPopoverProps) {
+function CellEditPopover({ check, dayNumber, onSave, onClose }: CellEditPopoverProps) {
   const [minutes, setMinutes] = useState<string>(
     check.minutes != null ? String(check.minutes) : ''
   );
@@ -93,11 +96,7 @@ function CellEditPopover({ check, onSave, onClose }: CellEditPopoverProps) {
         onClick={(e) => e.stopPropagation()}
       >
         <h3 className="mb-3 text-sm font-medium text-stone-800">
-          {new Date(check.date).toLocaleDateString('en-US', {
-            weekday: 'short',
-            month: 'short',
-            day: 'numeric',
-          })}
+          Day {dayNumber}
         </h3>
         <form onSubmit={handleSubmit} className="space-y-3">
           <div>
