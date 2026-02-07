@@ -1,0 +1,36 @@
+# Dependencies
+node_modules/
+
+# Build
+frontend/dist/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+.venv/
+venv/
+env/
+
+# Env (keep .env.example)
+.env
+.env.local
+*.local
+
+# DB (local SQLite)
+*.db
+*.sqlite3
+
+# IDE / OS
+.idea/
+.vscode/
+.DS_Store
+*.swp
+*.swo
+nul
+
+# Logs
+*.log
+npm-debug.log*
